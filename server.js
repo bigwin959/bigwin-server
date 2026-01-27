@@ -47,7 +47,8 @@ function readHeroData() {
                 promoCode: "BPL2026",
                 bonusTitle: "🎁 WELCOME BONUS",
                 bonusDesc: "Deposit <span class='text-yellow-400 font-bold'>500 BDT</span> & Get <span class='text-yellow-400 font-bold'>500 BDT FREE</span>",
-                bonusButtonText: "CLAIM 100% BONUS NOW"
+                bonusButtonText: "CLAIM 100% BONUS NOW",
+                bonusButtonLink: "https://www.bigwin959.com/?tid=56086&affiliateCode=heylinkvideo&fbPixelId=1093698699511405"
             };
         }
         const content = fs.readFileSync(HERO_FILE, 'utf8');
@@ -60,7 +61,10 @@ function readHeroData() {
             promoCode: "BPL2026",
             bonusTitle: "🎁 WELCOME BONUS",
             bonusDesc: "Deposit <span class='text-yellow-400 font-bold'>500 BDT</span> & Get <span class='text-yellow-400 font-bold'>500 BDT FREE</span>",
-            bonusButtonText: "CLAIM 100% BONUS NOW"
+            bonusButtonText: "CLAIM 100% BONUS NOW",
+            bonusButtonLink: "https://www.bigwin959.com/?tid=56086&affiliateCode=heylinkvideo&fbPixelId=1093698699511405",
+            navIconClass: "fa-solid fa-trophy text-yellow-500 text-xl",
+            navTitleHTML: "BPL<span class='text-green-500'>2026</span>"
         };
     }
 }
