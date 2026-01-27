@@ -1,0 +1,20 @@
+[
+    {
+        "id": "1769499129215",
+        "series": "England tour of Sri Lanka 2026",
+        "date": "Today",
+        "time": "03:30 PM / 09:00 AM (GMT) / 02:30 PM (LOCAL)",
+        "venue": "",
+        "isLive": false,
+        "team1": {
+            "name": "Sri Lanka",
+            "logo": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c776254/i.jpg",
+            "odds": "1.9"
+        },
+        "team2": {
+            "name": "England",
+            "logo": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c776237/i.jpg",
+            "odds": "1.85"
+        }
+    }
+]
