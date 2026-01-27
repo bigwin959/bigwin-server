@@ -8,6 +8,7 @@ const cors = require('cors');
 const app = express();
 const PORT = 3005;
 const DATA_FILE = path.join(__dirname, 'data.json');
+const HERO_FILE = path.join(__dirname, 'hero_data.json');
 
 app.use(cors());
 app.use(express.json());
@@ -35,6 +36,44 @@ function writeData(data) {
     }
 }
 
+
+// Helper to read hero data
+function readHeroData() {
+    try {
+        if (!fs.existsSync(HERO_FILE)) {
+            return {
+                imageUrl: "https://res.cloudinary.com/dmyocpyxd/image/upload/v1768741799/1.jpg",
+                title: "BANGLADESH PREMIER LEAGUE",
+                promoCode: "BPL2026",
+                bonusTitle: "🎁 WELCOME BONUS",
+                bonusDesc: "Deposit <span class='text-yellow-400 font-bold'>500 BDT</span> & Get <span class='text-yellow-400 font-bold'>500 BDT FREE</span>",
+                bonusButtonText: "CLAIM 100% BONUS NOW"
+            };
+        }
+        const content = fs.readFileSync(HERO_FILE, 'utf8');
+        return JSON.parse(content);
+    } catch (err) {
+        console.error("Error reading hero data file:", err);
+        return {
+            imageUrl: "https://res.cloudinary.com/dmyocpyxd/image/upload/v1768741799/1.jpg",
+            title: "BANGLADESH PREMIER LEAGUE",
+            promoCode: "BPL2026",
+            bonusTitle: "🎁 WELCOME BONUS",
+            bonusDesc: "Deposit <span class='text-yellow-400 font-bold'>500 BDT</span> & Get <span class='text-yellow-400 font-bold'>500 BDT FREE</span>",
+            bonusButtonText: "CLAIM 100% BONUS NOW"
+        };
+    }
+}
+
+// Helper to write hero data
+function writeHeroData(data) {
+    try {
+        fs.writeFileSync(HERO_FILE, JSON.stringify(data, null, 4));
+    } catch (err) {
+        console.error("Error writing hero data file:", err);
+    }
+}
+
 // Helper to scrape Cricbuzz data with detailed Multi-Timezone info
 async function scrapeMatchData(category = 'live') {
     try {
@@ -45,9 +84,9 @@ async function scrapeMatchData(category = 'live') {
         }
 
         console.log(`Fetching merged Cricbuzz data... Category: ${category} ${requestedDate ? `for date ${requestedDate}` : ''}`);
-        
-        const urlsToFetch = ['https://www.cricbuzz.com/cricket-match/live-scores']; 
-        
+
+        const urlsToFetch = ['https://www.cricbuzz.com/cricket-match/live-scores'];
+
         if (category === 'schedule' || requestedDate) {
             urlsToFetch.push('https://www.cricbuzz.com/cricket-match/live-scores/upcoming-matches');
             urlsToFetch.push('https://www.cricbuzz.com/cricket-schedule/upcoming-series/international');
@@ -76,7 +115,7 @@ async function scrapeMatchData(category = 'live') {
                 const clean = bigScript.replace(/\\"/g, '"').replace(/\\\\/g, '\\');
                 // Regex updated to include potential venueInfo
                 const blocks = clean.match(/"matchId":\d+.*?"team2":\{.*?\}(?:,.*?"venueInfo":\{.*?\})?/g) || [];
-                
+
                 blocks.forEach(block => {
                     const idM = block.match(/"matchId":(\d+)/);
                     if (!idM) return;
@@ -99,7 +138,7 @@ async function scrapeMatchData(category = 'live') {
                     const stateM = block.match(/"state":"(.*?)"/);
                     const startM = block.match(/"startDate":(?:"|)(\d+)/);
                     const venueM = block.match(/"venueInfo":(\{.*?\})/);
-                    
+
                     const status = statusM ? statusM[1] : (stateM ? stateM[1] : "Scheduled");
                     const state = stateM ? stateM[1] : "";
 
@@ -114,19 +153,19 @@ async function scrapeMatchData(category = 'live') {
                     if (startM) {
                         const timestamp = parseInt(startM[1]);
                         const dt = new Date(timestamp);
-                        
+
                         const now = new Date();
                         const tomorrow = new Date();
                         tomorrow.setDate(now.getDate() + 1);
-                        
+
                         const isToday = dt.toDateString() === now.toDateString();
                         const isTomorrow = dt.toDateString() === tomorrow.toDateString();
-                        
+
                         const dayNum = String(dt.getDate()).padStart(2, '0');
                         const monthNum = String(dt.getMonth() + 1).padStart(2, '0');
                         const yearNum = dt.getFullYear();
                         dateStr = isToday ? "Today" : (isTomorrow ? "Tomorrow" : `${dayNum}/${monthNum}/${yearNum}`);
-                        
+
                         const formatT = (d, isUTC = false) => {
                             let hh = isUTC ? d.getUTCHours() : d.getHours();
                             const mm = String(isUTC ? d.getUTCMinutes() : d.getMinutes()).padStart(2, '0');
@@ -150,7 +189,7 @@ async function scrapeMatchData(category = 'live') {
                                     const vDt = new Date(timestamp + (off * 60000));
                                     localT = formatT(vDt, true);
                                 }
-                            } catch(e) {}
+                            } catch (e) { }
                         }
 
                         fullTimeStr = `${userT} / ${gmtT} (GMT) / ${localT} (LOCAL)`;
@@ -200,7 +239,7 @@ async function scrapeMatchData(category = 'live') {
                 venue: "Cricbuzz Data",
                 team1: { name: m.t1.name, logo: m.t1.logo, odds: "1.90" },
                 team2: { name: m.t2.name, logo: m.t2.logo, odds: "1.90" },
-                status: status, 
+                status: status,
                 isLive: state === "In Progress" || status.includes("Need") || status.includes("trails") || status.includes("leads")
             };
 
@@ -232,7 +271,7 @@ async function scrapeSportradarData() {
         });
         const fetchedMatches = [];
         if (data && data.doc && data.doc.length > 0) {
-            const matchesData = data.doc[0].data; 
+            const matchesData = data.doc[0].data;
             const matches = matchesData.matches || {};
             Object.values(matches).forEach(m => {
                 const isLive = m.status && m.status.name === "Live";
@@ -258,7 +297,7 @@ async function scrapeSportradarData() {
                     venue: m.venue ? m.venue.name : "Sportradar",
                     team1: { name: t1Name, logo: t1Logo, odds: "1.90" },
                     team2: { name: t2Name, logo: t2Logo, odds: "1.90" },
-                    status: statusText, 
+                    status: statusText,
                     isLive: isLive
                 });
             });
@@ -271,12 +310,12 @@ async function scrapeSportradarData() {
 }
 
 // API Routes
-app.get('/api/matches', (req, res) => { 
-    res.json(readData()); 
+app.get('/api/matches', (req, res) => {
+    res.json(readData());
 });
 
-app.post('/api/matches', (req, res) => { 
-    const match = req.body; 
+app.post('/api/matches', (req, res) => {
+    const match = req.body;
     let matches = readData();
 
     if (match.id) {
@@ -294,8 +333,8 @@ app.post('/api/matches', (req, res) => {
         matches.push(match);
     }
 
-    writeData(matches); 
-    res.json({ success: true, match }); 
+    writeData(matches);
+    res.json({ success: true, match });
 });
 
 app.delete('/api/matches/:id', (req, res) => {
@@ -315,6 +354,16 @@ app.get('/api/fetch-online', async (req, res) => {
 app.get('/api/fetch-sportradar', async (req, res) => {
     const matches = await scrapeSportradarData();
     res.json({ success: true, matches });
+});
+
+app.get('/api/hero', (req, res) => {
+    res.json(readHeroData());
+});
+
+app.post('/api/hero', (req, res) => {
+    const data = req.body;
+    writeHeroData(data);
+    res.json({ success: true, data });
 });
 
 app.listen(PORT, () => {
