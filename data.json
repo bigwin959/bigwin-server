@@ -1,23 +1,5 @@
 [
     {
-        "id": "1769495104510",
-        "series": "Ireland vs Italy in UAE, 2026",
-        "date": "26/01/2026",
-        "time": "10:00 PM / 02:00 PM (GMT) / 06:00 PM (LOCAL)",
-        "venue": "",
-        "isLive": false,
-        "team1": {
-            "name": "Ireland",
-            "logo": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c776285/i.jpg",
-            "odds": ""
-        },
-        "team2": {
-            "name": "Italy",
-            "logo": "https://static.cricbuzz.com/a/img/v1/152x152/i1/c776295/i.jpg",
-            "odds": ""
-        }
-    },
-    {
         "id": "1769495112490",
         "series": "ICC Under 19 World Cup 2026",
         "date": "26/01/2026",
