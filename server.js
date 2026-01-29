@@ -64,7 +64,23 @@ function readHeroData() {
             bonusButtonText: "CLAIM 100% BONUS NOW",
             bonusButtonLink: "https://www.bigwin959.com/?tid=56086&affiliateCode=heylinkvideo&fbPixelId=1093698699511405",
             navIconClass: "fa-solid fa-trophy text-yellow-500 text-xl",
-            navTitleHTML: "BPL<span class='text-green-500'>2026</span>"
+            navTitleHTML: "BPL<span class='text-green-500'>2026</span>",
+            liveSectionLink: "https://www.bigwin959.com/register?affiliateCode=cricket001",
+            navBackgroundColor: "#1e293b",
+            bodyBackgroundColor: "#0f172a",
+            bonusGradientStart: "#064e3b",
+            bonusGradientEnd: "#0f172a",
+            bonusTitleColor: "#ffffff",
+            bonusDescColor: "#cbd5e1",
+            bonusAccentColor: "#facc15",
+            bonusButtonTextColor: "#000000",
+            bonusButtonGradientStart: "#F59E0B",
+            bonusButtonGradientEnd: "#D97706",
+            socialContacts: [
+                { name: "Facebook", link: "#", icon: "fa-brands fa-facebook", color: "#1877F2" },
+                { name: "Telegram", link: "#", icon: "fa-brands fa-telegram", color: "#24A1DE" },
+                { name: "WhatsApp", link: "#", icon: "fa-brands fa-whatsapp", color: "#25D366" }
+            ]
         };
     }
 }
